@@ -26,7 +26,7 @@ namespace Posts.Likes.Application.Handlers
         {
             var exists = await _likeService.Exists(request.User.Id, request.PostId);
 
-            if (exists)
+            if (!exists)
             {
                 var like = new Like();
                 var user = _mapper.Map<User>(request.User);
