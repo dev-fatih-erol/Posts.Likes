@@ -24,11 +24,7 @@ namespace Posts.Likes.Api.Controllers
 
         [HttpPost]
         [Route("Like")]
-        public async Task<IActionResult> Like([FromBody]LikeCommand command)
-        {
+        public async Task Like([FromBody]LikeCommand command) =>
             await _mediator.Send(command);
-
-            return NoContent();
-        }
     }
 }
