@@ -23,7 +23,6 @@
     <Folder Include="Handlers\" />
     <Folder Include="Queries\" />
     <Folder Include="Validators\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>
