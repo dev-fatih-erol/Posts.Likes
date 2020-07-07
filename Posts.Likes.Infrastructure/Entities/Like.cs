@@ -7,6 +7,7 @@ namespace Posts.Likes.Infrastructure.Entities
     public class Like
     {
         [BsonId]
+        [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 

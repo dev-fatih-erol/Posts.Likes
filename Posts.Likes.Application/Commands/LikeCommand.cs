@@ -3,7 +3,7 @@ using Posts.Likes.Application.Dtos;
 
 namespace Posts.Likes.Application.Commands
 {
-    public class LikeCommand : IRequest<Unit>
+    public class LikeCommand : IRequest<LikeDto>
     {
         public UserDto User { get; }
 

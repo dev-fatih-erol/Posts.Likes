@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Posts.Likes.Application.Commands;
+using Posts.Likes.Application.Dtos;
 using Posts.Likes.Infrastructure.Entities;
 using Posts.Likes.Infrastructure.Services;
 
 namespace Posts.Likes.Application.Handlers
 {
-    public class LikeHandler : IRequestHandler<LikeCommand, Unit>
+    public class LikeHandler : IRequestHandler<LikeCommand, LikeDto>
     {
         private readonly IMapper _mapper;
 
@@ -22,22 +23,19 @@ namespace Posts.Likes.Application.Handlers
             _likeService = likeService;
         }
 
-        public async Task<Unit> Handle(LikeCommand request, CancellationToken cancellationToken)
+        public async Task<LikeDto> Handle(LikeCommand request, CancellationToken cancellationToken)
         {
-            var exists = await _likeService.Exists(request.User.Id, request.PostId);
+            var like = await _likeService.Like(
+                new Like
+                {
+                    User = _mapper.Map<User>(request.User),
+                    CreatedDate = DateTime.UtcNow,
+                    PostId = request.PostId
+                });
 
-            if (!exists)
-            {
-                var like = new Like();
-                var user = _mapper.Map<User>(request.User);
-                like.User = user;
-                like.CreatedDate = DateTime.UtcNow;
-                like.PostId = request.PostId;
+            var response = _mapper.Map<LikeDto>(like);
 
-                await _likeService.Like(like);
-            }
-
-            return Unit.Value;
+            return response;
         }
     }
 }

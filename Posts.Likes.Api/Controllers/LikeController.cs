@@ -22,13 +22,23 @@ namespace Posts.Likes.Api.Controllers
             return Ok(await _mediator.Send(new GetLikesQuery(postId, pageIndex)));
         }
 
+        [HttpDelete]
+        [Route("Like/{postId:length(24)}")]
+        public async Task<IActionResult> Unlike([FromRoute]string postId)
+        {
+            int userId = 3;
+            await _mediator.Send(new UnlikeCommand(userId, postId));
+
+            return NoContent();
+        }
+
         [HttpPost]
         [Route("Like")]
         public async Task<IActionResult> Like([FromBody]LikeCommand command)
         {
-            await _mediator.Send(command);
+            var like = await _mediator.Send(command);
 
-            return Ok();
+            return Created($"Like/{like.Id}", like);
         }
     }
 }

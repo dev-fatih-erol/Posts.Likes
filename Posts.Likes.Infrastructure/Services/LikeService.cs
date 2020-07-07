@@ -24,14 +24,22 @@ namespace Posts.Likes.Infrastructure.Services
             return _dbContext.Likes.AsQueryable().Where(l => l.PostId == postId);
         }
 
-        public async Task Unlike(string id)
+        public async Task<Like> Unlike(int userId, string postId)
         {
-            await _dbContext.Likes.DeleteOneAsync(l => l.Id == id);
+            return await _dbContext.Likes.FindOneAndDeleteAsync(l => l.User.Id == userId && l.PostId == postId);
         }
 
-        public async Task Like(Like like)
+        public async Task<Like> Like(Like like)
         {
-            await _dbContext.Likes.InsertOneAsync(like);
+            return await _dbContext.Likes.FindOneAndReplaceAsync(
+                Builders<Like>.Filter.Eq(l => l.User.Id, like.User.Id) &
+                Builders<Like>.Filter.Eq(l => l.PostId, like.PostId),
+                like,
+                new FindOneAndReplaceOptions<Like>
+                {
+                    IsUpsert = true,
+                    ReturnDocument = ReturnDocument.After
+                });
         }
     }
 }
