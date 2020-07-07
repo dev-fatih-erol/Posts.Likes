@@ -14,14 +14,14 @@ namespace Posts.Likes.Infrastructure.Services
             _dbContext = dbContext;
         }
 
-        public async Task<bool> Exists(int userId, string postId)
-        {
-            return await _dbContext.Likes.Find(l => l.User.Id == userId && l.PostId == postId).AnyAsync();
-        }
-
         public IMongoQueryable<Like> GetLikes(string postId)
         {
             return _dbContext.Likes.AsQueryable().Where(l => l.PostId == postId);
+        }
+
+        public async Task<Like> GetLike(string id)
+        {
+            return await _dbContext.Likes.Find(l => l.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Like> Unlike(int userId, string postId)

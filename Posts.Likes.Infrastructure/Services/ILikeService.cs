@@ -8,6 +8,8 @@ namespace Posts.Likes.Infrastructure.Services
     {
         IMongoQueryable<Like> GetLikes(string postId);
 
+        Task<Like> GetLike(string id);
+
         Task<Like> Unlike(int userId, string postId);
 
         Task<Like> Like(Like like);

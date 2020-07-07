@@ -22,6 +22,13 @@ namespace Posts.Likes.Api.Controllers
             return Ok(await _mediator.Send(new GetLikesQuery(postId, pageIndex)));
         }
 
+        [HttpGet]
+        [Route("Like/{id:length(24)}")]
+        public async Task<IActionResult> GetLike([FromRoute]string id)
+        {
+            return Ok(await _mediator.Send(new GetLikeQuery(id)));
+        }
+
         [HttpDelete]
         [Route("Like/{postId:length(24)}")]
         public async Task<IActionResult> Unlike([FromRoute]string postId)

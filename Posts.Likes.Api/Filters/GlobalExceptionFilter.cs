@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
+using Posts.Likes.Application.Exceptions;
 
 namespace Posts.Likes.Api.Filters
 {
@@ -30,6 +31,11 @@ namespace Posts.Likes.Api.Filters
 
                 context.Result = new JsonResult(errors);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else if (exception is NotFoundException)
+            {
+                context.Result = new JsonResult(exception.Message);
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             }
             else
             {
