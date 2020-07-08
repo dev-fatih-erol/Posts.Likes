@@ -7,11 +7,11 @@ namespace Posts.Likes.Application.Validators
     {
         public LikeValidator()
         {
-            RuleFor(c => c.User)
+            RuleFor(l => l.User)
                 .NotNull()
                 .WithMessage("{PropertyName} is required.");
 
-            RuleFor(c => c.PostId)
+            RuleFor(l => l.PostId)
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required.");
         }
